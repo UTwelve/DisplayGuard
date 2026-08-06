@@ -4,8 +4,6 @@
 
 当一块"显示器"其实并不是显示器——例如通过 HDMI 连接的条形音响、采集卡、EDID 模拟器被 Windows 识别为一块扩展屏幕——窗口和鼠标就可能"掉"进这块看不见的区域。DisplayGuard 以系统托盘常驻的方式监测这些屏幕，发现窗口误入即自动搬回，**不修改任何显示与音频配置**（禁用显示器可能导致 HDMI 音频中断，本工具正是为此场景设计）。
 
-![icon](assets/DisplayGuard.png)
-
 ## 功能特性
 
 - **系统托盘常驻**：无窗口打扰，启动即静默工作（`--quiet`）
@@ -49,19 +47,20 @@
 ```bat
 C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe ^
   -nologo -target:exe -codepage:65001 ^
-  -win32icon:assets\DisplayGuard.ico ^
   -out:DisplayGuardTray.exe ^
   -r:System.Windows.Forms.dll -r:System.Drawing.dll -r:System.dll ^
   src\DisplayGuardTray.cs
 ```
 
+可选：先用 `tools/make_icon.py`（需 Python + Pillow）生成 `DisplayGuard.ico`，
+编译时附加 `-win32icon:DisplayGuard.ico` 即可嵌入自定义图标。
+
 ## 目录结构
 
 ```
 src/DisplayGuardTray.cs   完整源码（单文件，纯 Win32 P/Invoke）
-assets/                   图标（ico / png）
 tools/test-tray.ps1       自动化测试脚本（搬移测试 + 托盘冒烟测试）
-tools/make_icon.py        图标生成脚本（Pillow）
+tools/make_icon.py        图标生成脚本（Pillow，生成 ico / png）
 ```
 
 ## 已知限制
